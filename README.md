@@ -12,6 +12,20 @@ Q2 : l n'est pas recommandé de hacher directement le sel et la clé, car cela p
 Q3 : il est préférable de vérifier si un fichier token.bin est déjà présent, car cela peut indiquer que le ransomware a déjà été exécuté sur le système cible. Dans ce cas, vous ne voudriez pas écraser les données cryptographiques existantes, car cela rendrait impossible la récupération des fichiers chiffrés avec l'ancien token. En vérifiant l'existence du fichier token.bin, vous vous assurez de ne pas causer de dommages supplémentaires et de ne pas rendre la situation encore plus compliquée pour la victime.
 
 
+B1: Dans cette partie, l'idée est d'envoyer les fichiers de la victime au CNC (centre de contrôle et de commande) pour pouvoir les revendre à la victime en cas de besoin. Cela ajoute une autre source de revenus pour l'attaquant et rend l'attaque plus efficace.
+
+B2: Le chiffrement XOR est vulnérable à une attaque connue sous le nom d'attaque "known-plaintext". Si l'attaquant dispose d'un fichier chiffré et de sa version en clair, il peut facilement retrouver la clé. Le script suivant démontre comment récupérer la clé:
+
+B3: La bibliothèque cryptography offre de nombreuses options fiables pour le chiffrement, comme l'utilisation de l'AES (Advanced Encryption Standard) avec un mode d'opération comme GCM (Galois/Counter Mode). L'utilisation d'une méthode de chiffrement symétrique moderne comme l'AES-GCM garantit une sécurité accrue.
+
+Pour implémenter cette solution, vous devrez remplacer la méthode de chiffrement XOR actuelle par l'AES-GCM.
+
+B4: Pour créer un binaire avec pyinstaller, exécutez la commande suivante dans votre terminal: pyinstaller --onefile your_script.py
+
+B5: Le binaire créé se trouvera dans le dossier dist qui sera créé dans le répertoire courant.
+
+
+
 
 
 

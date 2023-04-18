@@ -15,6 +15,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 from xorcrypt import xorfile
 from secrets import token_bytes
+import os
 
 class SecretManager:
     ITERATION = 48000
@@ -131,6 +132,28 @@ class SecretManager:
     def get_hex_token(self) -> str:
         token_hash = hashlib.sha256(self._token).hexdigest()
         return token_hash
+    
+    def load(self) -> None:
+        with open(f"{self._path}/salt.bin", "rb") as f:
+            self._salt = f.read()
+
+        with open(f"{self._path}/token.bin", "rb") as f:
+            self._token = f.read()
+
+    def check_key(self, candidate_key: bytes) -> bool:
+        derived_key = self.do_derivation(self._salt, candidate_key)
+        return derived_key == self._key
+
+    def set_key(self, b64_key: str) -> None:
+        decoded_key = base64.b64decode(b64_key)
+        if self.check_key(decoded_key):
+            self._key = decoded_key
+        else:
+            raise ValueError("Invalid key provided")
+    
+    def clean(self):
+        os.remove(f"{self._path}/salt.bin")
+        os.remove(f"{self._path}/token.bin")
     
 
 
